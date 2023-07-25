@@ -1,6 +1,12 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect } from 'react'
 
 const Blogs = () => {
+  const sendRequest = axios.get("http://localhost:5000/api/blog").catch(err => console.log(err))
+  useEffect(() => {
+
+  },[])
+
   return (
     <div>
       
@@ -8,4 +14,4 @@ const Blogs = () => {
   )
 }
 
-export default Blogs
+export default Blogs;
