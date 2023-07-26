@@ -1,13 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { authActions } from "../Store";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const dispath = useDispatch()
+  const dispath = useDispatch();
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -17,30 +17,39 @@ const Auth = () => {
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
-      [e.target.name] : e.target.value
-    }))
-  }
-  const sendRequest = async (type="login") => {
-    const res = await axios.post(`http://localhost:5000/api/user/${type}`,{
-      name: inputs.name,
-      email: inputs.email,
-      password: inputs.password
-    })
-    .catch((err) => console.log(err))
-    
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const sendRequest = async (type = "login") => {
+    const res = await axios
+      .post(`http://localhost:5000/api/user/${type}`, {
+        name: inputs.name,
+        email: inputs.email,
+        password: inputs.password,
+      })
+      .catch((err) => console.log(err));
+
     const data = await res.data;
+    console.log(data);
     return data;
-  }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
-    if(isSignup){
-      sendRequest("signup").then(()=> dispath(authActions.login())).then(()=> navigate("/blogs")).then(data => console.log(data));
+    if (isSignup) {
+      sendRequest("signup")
+        .then((data) => localStorage.setItem("userId",data.user._id))
+        .then(() => dispath(authActions.login()))
+        .then(() => navigate("/blogs"))
+        .then((data) => console.log(data));
+    } else {
+      sendRequest()
+      .then((data) => localStorage.setItem("userId",data.user._id))
+        .then(() => dispath(authActions.login()))
+        .then(() => navigate("/blogs"))
+        .then((data) => console.log(data));
     }
-    else{
-      sendRequest().then(()=> dispath(authActions.login())).then(()=> navigate("/blogs")).then(data => console.log(data));
-    }
-  }
+  };
 
   return (
     <div>
@@ -61,7 +70,13 @@ const Auth = () => {
             {isSignup ? "Signup" : "Login"}
           </Typography>
           {isSignup && (
-            <TextField name="name" onChange={handleChange} value={inputs.name} placeholder="Name" margin="normal" />
+            <TextField
+              name="name"
+              onChange={handleChange}
+              value={inputs.name}
+              placeholder="Name"
+              margin="normal"
+            />
           )}{" "}
           <TextField
             onChange={handleChange}
