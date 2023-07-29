@@ -29,7 +29,7 @@ const Header = () => {
       {/* full navigation bar */}
       <Toolbar>
         {/* text */}
-        <Typography variant="h5">BlogsApp</Typography>
+        <Typography variant="h5" color="blueviolet" fontWeight={"bold"}>BlogWeave</Typography>
         {/* its like div */}
         {isLoggedIn && (
           <Box display="flex" marginLeft={"auto"} marginRight="auto">
