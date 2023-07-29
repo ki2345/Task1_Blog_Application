@@ -29,16 +29,20 @@ export const addBlog = async(req, res, next) => {
     if(!existUser){
         return res.status(400).json({message: "Unable to find User by this Id"});
     }
+    //create a new blog
     const blog = new Blog({
         title,
         description,
         image,
         user,
     });
+    //saving the blog to the user also
     try{
         const session = await mongoose.startSession();
         session.startTransaction();
+        //saving the blog from the current session 
         await blog.save({session});
+        //pushing the blog's data to the array blogs, if he/she is an existing user
         existUser.blogs.push(blog);
         await existUser.save({session});
         await session.commitTransaction();
@@ -89,6 +93,7 @@ export const deleteBlog = async(req, res, next) => {
     let blog;
     try{
         blog = await Blog.findByIdAndRemove(id).populate('user');
+        //remove the id of blog from user's blog array
         await blog.user.blogs.pull(blog);
         await blog.user.save();
     }
@@ -113,5 +118,5 @@ export const getByUserId = async(req, res, next) => {
     if(!userBlogs){
         return res.status(404).json({message: "No Blog Found"});
     }
-    return res.status(200).json({blogs: userBlogs});
+    return res.status(200).json({user: userBlogs});
 }

@@ -1,3 +1,4 @@
+//contain the functionality for the routes defined in the router folder
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
@@ -58,9 +59,9 @@ export const login = async(req, res, next) => {
         return console.log(err);
     }
     if(!existUser){
-        return res.status(404).json({message: "Invalid User!! Signup Again"});
+        return res.status(404).json({message: "Try to signup again!!"});
     }
-    //comparing the existing password with the current password
+    //comparing the existing password present in the database with the current password entered in the login page
     const isPasswordCorrect = bcrypt.compareSync(password, existUser.password);
     if(!isPasswordCorrect){
         return res.status(400).json({message: "Incorrect Password"});

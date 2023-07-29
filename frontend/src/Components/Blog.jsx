@@ -1,16 +1,37 @@
 import React from "react";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
+  Box,
   Card,
   CardContent,
   CardHeader,
   CardMedia,
+  IconButton,
   Typography,
 } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const Blog = ({title,description,imageURL,userName}) => {
+const Blog = ({title,description,imageURL,userName,isUser,id}) => {
+  const navigate = useNavigate();
+  const handleEdit = (e) => {
+      navigate(`/myBlogs/${id}`);
+  }
+  const deleteRequest = async() => {
+    const res = await axios.delete(`http://localhost:5000/api/blog/${id}`).catch((err) => console.log(err))
+    const data = await res.data;
+    return data;
+  }
+  const handleDelete = () => {
+      deleteRequest().then(navigate("/")).then(() => navigate("/blogs"));
+  }
+  // console.log(id);
+  console.log(title,isUser);
   return (
     <div>
+      {" "}
       <Card
         sx={{
           width: "40%",
@@ -23,10 +44,18 @@ const Blog = ({title,description,imageURL,userName}) => {
           },
         }}
       >
+        {
+          isUser && (
+            <Box display="flex">
+                <IconButton onClick={handleEdit} sx={{marginLeft: 'auto'}}><EditIcon color="warning" /></IconButton>
+                <IconButton onClick={handleDelete}><DeleteIcon color="error" /></IconButton>
+            </Box>
+          )
+        }
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-              {userName}
+              {userName ? userName.charAt(0) : ""}
             </Avatar>
           }
           title={title}
@@ -39,8 +68,10 @@ const Blog = ({title,description,imageURL,userName}) => {
           alt="Paella dish"
         />
         <CardContent>
+          <hr />
+          <br />
           <Typography variant="body2" color="text.secondary">
-            {description}
+            <b>{userName}</b> {": "} {description}
           </Typography>
         </CardContent>
       </Card>

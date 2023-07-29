@@ -14,6 +14,10 @@ const blogSchema = new Schema({
         type: String,
         required: true
     },
+    //tells which particular user has posted the blog
+    //created the reference of user for the blog, making relation between user and blog using mongoose
+    //one blog - one user
+    //one user - multiple blogs
     user: {
         type: mongoose.Types.ObjectId,
         ref: "User",

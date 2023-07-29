@@ -12,7 +12,7 @@ const app = express();
 //eghjvNKjQcYx3mfU
 //receiving the data and converting into json body
 app.use(cors());
-app.use(express.json());
+app.use(express.json());//parsing the data into json format while coming from the server
 app.use("/api/user", router);
 app.use("/api/blog", blogrouter);
 
@@ -21,3 +21,5 @@ mongoose.connect('mongodb+srv://reddy2002kiran:eghjvNKjQcYx3mfU@cluster0.0r9bx9o
 .then(() => app.listen(5000))
 .then(() => console.log("Connected to database and Listening to localhost 5000"))
 .catch((err) => console.log(err))
+
+

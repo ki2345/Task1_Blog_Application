@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const navigate = useNavigate();
+  //update the state using dispatch, dispatch actions to redux
   const dispath = useDispatch();
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [isSignup, setisSignup] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -35,6 +36,7 @@ const Auth = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    //printing  name, email, password
     console.log(inputs);
     if (isSignup) {
       sendRequest("signup")
@@ -103,7 +105,7 @@ const Auth = () => {
             Submit
           </Button>
           <Button
-            onClick={() => setisSignup(!isSignup)}
+            onClick={() => setIsSignup(!isSignup)}
             sx={{ borderRadius: 3, marginTop: 3 }}
           >
             {isSignup ? "Login" : "Signup"}

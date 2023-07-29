@@ -18,6 +18,7 @@ const userSchema = new Schema({
         required: true,
         minlength: 6
     },
+    //multiple blogs can be there, so used array of objects
     blogs: [
         {
             type: mongoose.Types.ObjectId,
@@ -27,3 +28,4 @@ const userSchema = new Schema({
     ]
 });
 export default mongoose.model("User", userSchema); //model -- collection
+//in mongodb - collection will be stored as users
